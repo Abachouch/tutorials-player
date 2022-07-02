@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "isolatedModules": true,
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "allowJs": true,
+    "esModuleInterop": true,
+    "outDir": "../build",
+    "baseUrl": "."
+  },
+  "include": ["."],
+  "exclude": ["node_modules"]
+}

@@ -1,0 +1,36 @@
+.new {
+  display: inline-grid;
+  justify-content: start;
+  background-color: var(--alt-bg-color);
+  padding: 1rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 200ms ease;
+  &:hover {
+    box-shadow: 2px 2px 6px var(--shadow-color);
+    background-color: var(--whitespace-color);
+  }
+
+  &_icon {
+    background-color: var(--bg-color);
+    grid-row-start: 1;
+    grid-row-end: 3;
+    padding: 0.2rem 0.3rem;
+    border-radius: 5px;
+    margin-right: 1rem;
+  }
+
+  &_heading {
+    font-size: 0.85rem;
+    font-weight: 500;
+    grid-column-start: 2;
+    color: var(--text-color);
+  }
+
+  &_description {
+    font-size: 0.8rem;
+    font-weight: 400;
+    grid-column-start: 2;
+    color: var(--alt-text-color);
+  }
+}

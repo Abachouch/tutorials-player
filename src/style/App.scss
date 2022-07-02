@@ -1,0 +1,16 @@
+@import "./base/variables";
+@import "./base/reset";
+@import "./base/colors";
+@import "./base/scrolbar";
+@import "./base/typography";
+@import "./layout/titlebar";
+@import "./layout/main";
+@import "./layout/nav";
+@import "./modules/new";
+@import "./modules/tutorial";
+@import "./modules/search";
+@import "./modules/playlist";
+
+#main {
+  padding: 2rem;
+}

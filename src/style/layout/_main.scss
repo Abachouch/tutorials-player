@@ -1,0 +1,7 @@
+#l-main {
+  margin-top: var(--title-height);
+  padding: 2rem;
+  height: calc(100vh - var(--title-height));
+  width: 100vw;
+  overflow: auto;
+}

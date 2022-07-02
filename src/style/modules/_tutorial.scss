@@ -1,0 +1,92 @@
+.tutorials {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 2.5rem;
+}
+
+.tutorial {
+  width: 260px;
+  display: inline-block;
+  background-color: var(--bg-color);
+
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 16px var(--shadow-color);
+  transition: background-color 200ms ease;
+
+  &_img {
+    display: block;
+    width: 100%;
+  }
+
+  &:hover {
+    background-color: var(--whitespace-color);
+  }
+
+  &_icon {
+    display: none;
+    margin: 2rem;
+  }
+
+  &.no-thumb > &_icon {
+    display: block;
+  }
+
+  &_title {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--text-color);
+    margin: 2rem;
+    height: 150px;
+    word-wrap: break-word;
+  }
+
+  &_path {
+    display: none;
+    margin: 1rem 2rem;
+  }
+
+  &.no-thumb &_path {
+    color: var(--alt-text-color);
+    font-size: 0.75rem;
+    font-weight: 400;
+    display: block;
+  }
+}
+
+.search {
+  .tutorial {
+    width: 100%;
+    display: flex;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-top: 1rem;
+    box-shadow: none;
+
+    &_icon {
+      margin: 1rem;
+    }
+
+    &_img {
+      display: block;
+      width: 150px;
+    }
+
+    &_title {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-color);
+      margin: 1rem;
+      height: auto;
+    }
+
+    &_path {
+      color: var(--alt-text-color);
+      font-size: 0.7rem;
+      font-weight: 500;
+      margin: 1rem;
+    }
+  }
+}

@@ -1,0 +1,93 @@
+.playlist {
+  &_nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-block: 0 2rem;
+    &_return {
+      border: none;
+      font-size: 2.5rem;
+      margin-right: 3rem;
+      background-color: none;
+      cursor: pointer;
+      & > svg {
+        stroke: var(--text-color);
+      }
+      &:hover > svg {
+        stroke: var(--alt-text-color);
+      }
+    }
+    &_title {
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--text-color);
+    }
+    &_remouve {
+      border: none;
+      background-color: transparent;
+      path {
+        fill: var(--alt-text-color);
+      }
+      &:hover {
+        path {
+          fill: var(--danger-color);
+        }
+      }
+    }
+  }
+
+  &_content {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    align-items: flex-start;
+  }
+
+  &_aside {
+    width: 350px;
+    background-color: var(--whitespace-color);
+    border-radius: 6px;
+    flex-shrink: 0;
+    max-height: calc(100vh - 150px);
+    overflow: auto;
+  }
+  &_section {
+    &_heading {
+      padding: 1rem 2rem;
+      font-weight: 500;
+      font-size: 0.95rem;
+      position: relative;
+      border-bottom: 1px solid var(--shadow-color);
+      .open & {
+        box-shadow: 0 3px 5px 0px var(--shadow-color);
+      }
+    }
+  }
+  &_lecture {
+    display: block;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 200ms ease;
+    .open &,
+    &.open {
+      max-height: 100px;
+    }
+
+    &_heading {
+      font-size: 1rem;
+      display: block;
+      padding: 1rem 2rem;
+      background-color: #f0f0f0;
+      border-top: 1px solid var(--shadow-color);
+    }
+  }
+  &_video {
+    &--wraper {
+      background-color: var(#626f8f);
+      width: 100%;
+    }
+
+    width: 100% !important;
+    height: auto !important;
+  }
+}

@@ -1,0 +1,46 @@
+#l_titlebar {
+  height: var(--title-height);
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--bg-color);
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+  z-index: 9999;
+}
+
+.win_name {
+  font-size: 0.75rem;
+  font-weight: 400;
+  margin-left: 1rem;
+}
+
+.win_controls {
+  display: flex;
+  justify-content: center;
+}
+
+.win_control {
+  padding: 6px 18px;
+  display: block;
+}
+
+.win_control svg {
+  fill: var(--text-color);
+}
+
+.win_control:hover {
+  background-color: var(--shadow-color);
+}
+
+.win_control-close:hover {
+  background-color: var(--danger-color);
+}
+
+.win_control-close:hover svg {
+  fill: var(--whitespace-color);
+}

@@ -1,0 +1,13 @@
+:root {
+  --bg-color: #f3f3f3;
+  --alt-bg-color: #e0dfdf;
+  --whitespace-color: white;
+  --shadow-color: rgba(0, 0, 0, 0.15);
+  --text-color: #061334;
+  --alt-text-color: #626f8f;
+  --danger-color: red;
+}
+
+body {
+  background-color: var(--bg-color);
+}
