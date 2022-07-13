@@ -1,14 +1,62 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Lecture from "../../common/modules/Lecture";
+import Section from "../../common/modules/Section";
+import Tutorial from "../../common/modules/Tutorial";
+import PlayingNowComponent from "../components/PlayingNow";
 import PlaylistComponent from "../components/Playlist";
+
 export default function PlaylistPage() {
   let { id } = useParams();
+  const [currentLecture, setCurrentLecture] = useState<Lecture | null>(null);
+  const [prevLecture, setPrevLecture] = useState<Lecture | null>(null);
+  const [nextLecture, setNextLecture] = useState<Lecture | null>(null);
+
+  const [tutorial, setTutorial] = useState<Tutorial>();
+  useEffect(() => {
+    window.api
+      .getTutorial(id as string)
+      .then((tut) => {
+        setTutorial(tut);
+      })
+      .catch((err) => {
+        console.error("err");
+      });
+  }, [id]);
+
+  function playLecture(lecture: Lecture) {
+    setCurrentLecture(lecture);
+    if (tutorial) {
+      let allLectures = [
+        ...tutorial.lectures,
+        ...tutorial.sections.map((s) => [s.lectures]),
+      ].flat(2);
+
+      const currentLecturePosition = allLectures.findIndex(
+        (l) => l.fullpath === lecture.fullpath
+      );
+
+      setNextLecture(
+        currentLecturePosition < allLectures.length - 1
+          ? allLectures[currentLecturePosition + 1]
+          : null
+      );
+
+      setPrevLecture(
+        currentLecturePosition === 0
+          ? null
+          : allLectures[currentLecturePosition - 1]
+      );
+    }
+  }
+
   const navigator = useNavigate();
+
   return (
-    <>
-      <nav className="playlist_nav">
+    <section className="player">
+      <nav className="player_nav">
         <button
-          className="playlist_nav_return"
+          className="player_nav_return"
           onClick={() => {
             navigator("/");
           }}
@@ -22,15 +70,17 @@ export default function PlaylistPage() {
           >
             <path
               d="M10.9567 3L2.99999 11M2.99999 11L10.9567 19M2.99999 11H30.8486"
-              stroke-width="3"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
           </svg>
         </button>
-        <h1 className="playlist_nav_title"></h1>
-        <div className="playlist_nav_controls">
-          <button className="playlist_nav_remouve">
+        <h1 className="player_nav_title">
+          {tutorial ? (tutorial as Tutorial).title : ""}
+        </h1>
+        <div className="player_nav_controls">
+          <button className="player_nav_remouve">
             <svg
               width="20"
               height="20"
@@ -43,13 +93,42 @@ export default function PlaylistPage() {
           </button>
         </div>
       </nav>
-      <div className="playlist_content">
-        <PlaylistComponent id={id || ""} />
-        <aside className="playlist_aside"></aside>
-        <div className="playlist_video--wraper">
-          <video className="playlist_video" controls></video>
-        </div>
-      </div>
-    </>
+
+      {tutorial ? (
+        <aside className="player_aside">
+          {currentLecture ? (
+            <PlayingNowComponent
+              currentLecture={currentLecture}
+              prevLecture={prevLecture}
+              nextLecture={nextLecture}
+              onPlay={(lecture) => {
+                playLecture(lecture);
+              }}
+            ></PlayingNowComponent>
+          ) : (
+            ""
+          )}
+
+          <PlaylistComponent
+            lectures={tutorial.lectures as Lecture[]}
+            sections={tutorial.sections as Section[]}
+            onPlay={(lecture) => {
+              playLecture(lecture);
+            }}
+          />
+        </aside>
+      ) : (
+        ""
+      )}
+
+      <video
+        className="player_video"
+        controls
+        onEnded={() => {
+          if (nextLecture) playLecture(nextLecture);
+        }}
+        src={currentLecture ? `atom://${currentLecture?.fullpath}` : ""}
+      ></video>
+    </section>
   );
 }

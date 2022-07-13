@@ -2,7 +2,7 @@ import Lecture from "./Lecture";
 import Section from "./Section";
 
 export default class Tutorial {
-  id: string | undefined;
+  _id: string;
   title: string;
   fullPath: string;
   lastSeen: Date;
@@ -10,8 +10,8 @@ export default class Tutorial {
   lectures: Lecture[];
   sections: Section[];
 
-  constructor(title: string, fullpath: string, _id?: string) {
-    this.id = _id;
+  constructor(title: string, fullpath: string, _id: string) {
+    this._id = _id;
     this.title = title;
     this.fullPath = fullpath;
     this.lastSeen = new Date();

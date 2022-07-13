@@ -1,9 +1,33 @@
-.playlist {
+@keyframes asideSlide {
+  from {
+    transform: translateX(-200px);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes videoSlide {
+  from {
+    transform: translateY(100px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.player {
+  display: grid;
+
+  grid-template-columns: 400px 1fr;
+  gap: 2rem;
   &_nav {
+    grid-column-start: 1;
+    grid-column-end: 3;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-block: 0 2rem;
+
     &_return {
       border: none;
       font-size: 2.5rem;
@@ -25,6 +49,7 @@
     &_remouve {
       border: none;
       background-color: transparent;
+      cursor: pointer;
       path {
         fill: var(--alt-text-color);
       }
@@ -35,43 +60,55 @@
       }
     }
   }
-
-  &_content {
-    display: flex;
-    flex-direction: row;
-    gap: 2rem;
-    align-items: flex-start;
-  }
-
   &_aside {
-    width: 350px;
-    background-color: var(--whitespace-color);
-    border-radius: 6px;
-    flex-shrink: 0;
     max-height: calc(100vh - 150px);
-    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    animation-name: asideSlide;
+    animation-duration: 200ms;
+    animation-timing-function: ease;
   }
-  &_section {
+  &_video {
+    display: block;
+    width: 100% !important;
+    height: auto !important;
+    animation-name: videoSlide;
+    animation-duration: 200ms;
+    animation-timing-function: ease;
+  }
+}
+
+.playlist {
+  background-color: var(--whitespace-color);
+  border-radius: 6px;
+
+  overflow: auto;
+
+  .section {
     &_heading {
       padding: 1rem 2rem;
       font-weight: 500;
       font-size: 0.95rem;
       position: relative;
       border-bottom: 1px solid var(--shadow-color);
-      .open & {
-        box-shadow: 0 3px 5px 0px var(--shadow-color);
-      }
+    }
+    .lecture {
+      max-height: 0;
     }
   }
-  &_lecture {
+  .is-open {
+    .section_heading {
+      box-shadow: 0 3px 5px 0px var(--shadow-color);
+    }
+
+    .lecture {
+      max-height: 100px !important ;
+    }
+  }
+  .lecture {
     display: block;
-    max-height: 0;
     overflow: hidden;
     transition: max-height 200ms ease;
-    .open &,
-    &.open {
-      max-height: 100px;
-    }
 
     &_heading {
       font-size: 1rem;
@@ -80,14 +117,5 @@
       background-color: #f0f0f0;
       border-top: 1px solid var(--shadow-color);
     }
-  }
-  &_video {
-    &--wraper {
-      background-color: var(#626f8f);
-      width: 100%;
-    }
-
-    width: 100% !important;
-    height: auto !important;
   }
 }

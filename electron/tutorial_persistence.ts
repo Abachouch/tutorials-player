@@ -4,9 +4,9 @@ import Datastore from "nedb-promises";
 
 import dirTree from "directory-tree";
 
-import Tutorial from "../src/modules/Tutorial";
-import Lecture from "../src/modules/Lecture";
-import Section from "../src/modules/Section";
+import Tutorial from "../common/modules/Tutorial";
+import Lecture from "../common/modules/Lecture";
+import Section from "../common/modules/Section";
 
 const tutorialsFilePath = join(
   app.getPath("appData"),
@@ -16,33 +16,27 @@ const tutorialsFilePath = join(
 );
 
 const tutorialsDatastore = Datastore.create(tutorialsFilePath);
-tutorialsDatastore.ensureIndex({ fieldName: "name", unique: true });
+tutorialsDatastore.ensureIndex({ fieldName: "title", unique: true });
 
 export async function getAllTutorials() {
   return await tutorialsDatastore.find({});
 }
 
-export async function findTutorialByName(name: string) {
-  const regx = new RegExp(name, "gi");
-  return await tutorialsDatastore.find({ name: regx });
+export async function findTutorialByName(title: string) {
+  const regx = new RegExp(title, "gi");
+  return await tutorialsDatastore.find({ title: regx });
 }
 
-export async function getTutorial(id: string): Promise<Tutorial> {
+export function getTutorial(id: string): Promise<Tutorial> {
   return tutorialsDatastore
-    .findOne({ _id: id }, { fullpath: 1 })
+    .findOne({ _id: id }, { fullPath: 1 })
     .then((data) => {
-      return new Promise((res, rej) => {
-        if (data && data.fullpath) {
-          return sacanTutorialFolder(data.fullpath as string);
-        } else {
-          rej(new Error("can't find tutorial"));
-        }
-      });
+      return sacanTutorialFolder(data.fullPath as string, data._id);
     });
 }
 
 export async function updateTutorial(tutorial: Tutorial) {
-  return await tutorialsDatastore.update({ _id: tutorial.id }, tutorial);
+  return await tutorialsDatastore.update({ _id: tutorial._id }, tutorial);
 }
 
 export async function deleteTutorial(tutID: number) {
@@ -58,8 +52,9 @@ export async function saveTutorial(
   folderPath: string
 ): Promise<void | ({ _id: string } & Tutorial)> {
   const tutorial: Tutorial = new Tutorial(
-    getNameFromPath(folderPath),
-    folderPath
+    getTitleFromPath(folderPath),
+    folderPath,
+    undefined
   );
 
   try {
@@ -70,16 +65,20 @@ export async function saveTutorial(
   }
 }
 
-function getNameFromPath(path: string): string {
+function getTitleFromPath(path: string): string {
   return basename(path);
 }
 
-function sacanTutorialFolder(tutorialpath: string): Promise<Tutorial> {
+function sacanTutorialFolder(
+  tutorialpath: string,
+  _id: string
+): Promise<Tutorial> {
   return new Promise((resolve, reject) => {
     try {
       const tutorial = new Tutorial(
-        getNameFromPath(tutorialpath),
-        tutorialpath
+        getTitleFromPath(tutorialpath),
+        tutorialpath,
+        _id
       );
       const filteredTree = dirTree(tutorialpath, {
         extensions: /\.(ogg|mp4|webm)$/,

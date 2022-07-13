@@ -1,6 +1,8 @@
 import { app, BrowserWindow, dialog, ipcMain, protocol } from "electron";
-import { normalize } from "path";
-import Tutorial from "../src/modules/Tutorial";
+import { access } from "fs/promises";
+import { join, normalize } from "path";
+import Tutorial from "../common/modules/Tutorial";
+import { constants } from "fs";
 import {
   deleteTutorial,
   findTutorialByName,
@@ -16,12 +18,15 @@ const createWindow = () => {
     height: 800,
     minHeight: 400,
     minWidth: 500,
-    // titleBarStyle: 'hidden',
-    // webPreferences: {
-    //   preload: join(__dirname, './preload.js'),
-    // },
+    titleBarStyle: "hidden",
+    webPreferences: {
+      preload: join(__dirname, "./preload.js"),
+      devTools: true,
+    },
   });
   // mainWindow.loadFile('./dist/index.html')
+  mainWindow.maximize();
+  mainWindow.webContents.openDevTools();
   mainWindow.loadURL("http://localhost:3000/");
 };
 
@@ -43,11 +48,12 @@ app.on("window-all-closed", () => {
 });
 
 ipcMain.handle("getTutorials", () => {
+  console.log("tutorials");
   return getAllTutorials();
 });
 
-ipcMain.handle("getTutorial", (event, id) => {
-  return getTutorial(id);
+ipcMain.handle("getTutorial", (event, _id) => {
+  return getTutorial(_id);
 });
 
 ipcMain.handle("addTutorial", async () => {
@@ -79,4 +85,23 @@ ipcMain.handle("findTutorialsByName", (event, searchName) => {
 
 ipcMain.handle("remouveTutorial", (event, tutorialId) => {
   return deleteTutorial(tutorialId);
+});
+
+ipcMain.handle("getThumbnail", async (event, tutorialPath) => {
+  let thumbnail: string | null = null;
+  const thumbs = [
+    "thumbnail.png",
+    "thumbnail.jpeg",
+    "thumbnail.webp",
+    "thumbnail.svg",
+  ];
+
+  //
+  for (let i = 0; i < thumbs.length; i++) {
+    try {
+      await access(join(tutorialPath, thumbs[i]), constants.F_OK);
+      thumbnail = join(tutorialPath, thumbs[i]);
+    } catch {}
+  }
+  return thumbnail;
 });

@@ -14,8 +14,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "typeRoots": ["./globals/"]
   },
-  "include": ["src"],
+  "include": ["src", "common/modules", "globals"],
   "exclude": ["node_modules"]
 }

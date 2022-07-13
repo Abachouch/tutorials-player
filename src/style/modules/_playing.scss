@@ -1,0 +1,44 @@
+.playing {
+  &_thumb {
+    background-color: var(--bg-color);
+  }
+
+  border-radius: 6px;
+  box-shadow: 0 2px 14px var(--shadow-color);
+  background-color: var(--whitespace-color);
+  padding: 2rem;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+
+  &_heading {
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  &_title {
+    margin-bottom: 1rem;
+    color: var(--text-color);
+  }
+
+  &_controls {
+    float: right;
+    button {
+      margin-left: 0.5rem;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1.5rem;
+      border-radius: 50%;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+
+      width: 2.5rem;
+      height: 2.5rem;
+
+      &:disabled {
+        cursor: unset;
+        opacity: 0.2;
+      }
+    }
+  }
+}

@@ -1,11 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Tutorial from "../../common/modules/Tutorial";
 import TutorialComponent from "../components/Tutorial";
 
 export default function HomePage() {
+  const [tutorials, setTutorials] = useState<Tutorial[]>([]);
+
+  useEffect(() => {
+    window.api.getTutorials().then((tuts) => {
+      setTutorials(tuts);
+    });
+  }, []);
+
+  function addNew() {
+    window.api.addTutorial().then((newTutorials: Tutorial[]) => {
+      if (newTutorials && newTutorials.length > 0)
+        setTutorials([...newTutorials, ...tutorials]);
+    });
+  }
+
   return (
     <>
       <nav className="win_nav">
-        <div className="new" id="newBtn">
+        <div className="new" id="newBtn" onClick={() => addNew()}>
           <span className="new_icon">
             <svg
               width="29"
@@ -32,11 +48,16 @@ export default function HomePage() {
       </nav>
 
       <div className="tutorials">
-        <TutorialComponent
-          title="Somme tutorial name"
-          path="some great path"
-          id="someId"
-        ></TutorialComponent>
+        {tutorials.map((tutorial: Tutorial, key) => {
+          return (
+            <TutorialComponent
+              key={key}
+              title={tutorial.title}
+              path={tutorial.fullPath}
+              id={tutorial._id}
+            ></TutorialComponent>
+          );
+        })}
       </div>
     </>
   );

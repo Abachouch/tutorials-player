@@ -1,30 +1,40 @@
 import React from "react";
-
-export default function PlaylistComponent({ id }: { id: string }) {
+import Lecture from "../../common/modules/Lecture";
+import Section from "../../common/modules/Section";
+import SectionComponent from "./Section";
+export default function PlaylistComponent({
+  lectures,
+  sections,
+  onPlay,
+}: {
+  lectures: Lecture[];
+  sections: Section[];
+  onPlay(lecture: Lecture): void;
+}) {
   return (
-    <aside className="playlist">
-      <div className="section">
-        <h2 className="section_heading">Playlist heading</h2>
-        <div className="lectures">
-          <div className="lecture">
-            <h2 className="lecture_heading">Lecture 1</h2>
-          </div>
-        </div>
-      </div>
+    <nav className="playlist">
+      {sections.map((section: Section, key) => (
+        <SectionComponent
+          title={section.title}
+          lectures={section.lectures}
+          onPlay={onPlay}
+          key={key}
+        ></SectionComponent>
+      ))}
+
       <div className="lectures">
-        <div className="lecture">
-          <h2 className="lecture_heading">Lecture 1</h2>
-        </div>
-        <div className="lecture">
-          <h2 className="lecture_heading">Lecture 1</h2>
-        </div>
-        <div className="lecture">
-          <h2 className="lecture_heading">Lecture 1</h2>
-        </div>
-        <div className="lecture">
-          <h2 className="lecture_heading">Lecture 1</h2>
-        </div>
+        {lectures.map((lecture: Lecture, key) => (
+          <div
+            key={key}
+            className="lecture"
+            onClick={() => {
+              onPlay(lecture);
+            }}
+          >
+            <h2 className="lecture_heading">{lecture.title} </h2>
+          </div>
+        ))}
       </div>
-    </aside>
+    </nav>
   );
 }

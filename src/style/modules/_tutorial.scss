@@ -1,37 +1,55 @@
+@keyframes tutorialsSlide {
+  from {
+    transform: translateY(50px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
 .tutorials {
   margin-top: 2rem;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 2.5rem;
+  animation-name: tutorialsSlide;
+  animation-duration: 200ms;
+  animation-timing-function: ease;
 }
 
 .tutorial {
   width: 260px;
-  display: inline-block;
-  background-color: var(--bg-color);
-
   border-radius: 6px;
   cursor: pointer;
-  box-shadow: 0 2px 16px var(--shadow-color);
-  transition: background-color 200ms ease;
+  box-shadow: 0 1px 4px var(--shadow-color);
+  transition: all 200ms ease;
+  background-color: var(--whitespace-color);
+  &_header {
+    width: 100%;
+    height: 160px;
+    display: flex;
+    justify-content: center;
+    background-color: var(--bg-color);
+  }
 
   &_img {
     display: block;
     width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 6px 6px 0 0;
   }
 
   &:hover {
-    background-color: var(--whitespace-color);
+    background-color: var(--bg-color);
+    box-shadow: 0 2px 16px var(--shadow-color);
+    transform: translateY(-5px);
   }
 
   &_icon {
-    display: none;
-    margin: 2rem;
-  }
-
-  &.no-thumb > &_icon {
     display: block;
+    margin: auto;
   }
 
   &_title {
@@ -57,21 +75,25 @@
 }
 
 .search {
+  &_result {
+    padding: 1rem;
+  }
   .tutorial {
     width: 100%;
     display: flex;
-    padding: 1rem;
+    padding: 0;
     border-radius: 6px;
     margin-top: 1rem;
     box-shadow: none;
 
-    &_icon {
-      margin: 1rem;
+    &_header {
+      width: 100px;
+      height: 80px;
+      flex-shrink: 0;
     }
 
     &_img {
-      display: block;
-      width: 150px;
+      border-radius: 6px;
     }
 
     &_title {
